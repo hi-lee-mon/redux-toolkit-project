@@ -3,6 +3,9 @@ import { Box } from "@mui/system";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+// Redux
+import { createTask } from "../taskSlice";
+import { useDispatch } from "react-redux";
 
 // style
 const root = { width: "30vw", mb: "20px" };
@@ -10,12 +13,12 @@ const textField = { width: "100%" };
 
 // submit value type
 type Input = {
-  task: string;
+  taskTitle: string;
 };
 
 // yupスキーマ定義
 const schema = yup.object().shape({
-  task: yup.string().required("タスク入力は必須です。"),
+  taskTitle: yup.string().required("タスク入力は必須です。"),
 });
 
 /**
@@ -23,6 +26,9 @@ const schema = yup.object().shape({
  * コンポーネント
  */
 export const TaskForm: React.FC = () => {
+  // dispatch
+  const dispatch = useDispatch();
+
   // useForm
   const {
     handleSubmit,
@@ -35,8 +41,8 @@ export const TaskForm: React.FC = () => {
 
   // SubmitHandler
   const handleCreate: SubmitHandler<Input> = (data) => {
-    console.log(data);
-    reset({ task: "" });
+    dispatch(createTask(data.taskTitle));
+    reset({ taskTitle: "" });
   };
 
   // jsx
@@ -44,7 +50,7 @@ export const TaskForm: React.FC = () => {
     <Box sx={root}>
       <form onSubmit={handleSubmit(handleCreate)}>
         <Controller
-          name="task"
+          name="taskTitle"
           defaultValue=""
           control={control}
           render={({ field }) => (
@@ -53,8 +59,8 @@ export const TaskForm: React.FC = () => {
               sx={textField}
               label="NewTask"
               variant="outlined"
-              error={!!errors.task}
-              helperText={errors.task ? errors.task?.message : ""}
+              error={!!errors.taskTitle}
+              helperText={errors.taskTitle ? errors.taskTitle?.message : ""}
             />
           )}
         />
