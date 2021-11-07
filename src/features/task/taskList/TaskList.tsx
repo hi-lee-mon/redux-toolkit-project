@@ -3,11 +3,11 @@ import React from "react";
 import { TaskItem } from "../taskItem/TaskItem";
 // Redux
 import { useSelector } from "react-redux";
-import { selectTask } from "../taskSlice";
+import { selectTasks } from "../taskSlice";
 
 export const TaskList: React.FC = () => {
   // stateが渡ってきた？
-  const tasks = useSelector(selectTask);
+  const tasks = useSelector(selectTasks);
   return (
     <Box sx={{ height: "50vh", overflow: "hidden", overflowY: "auto" }}>
       {tasks.map((task) => (
